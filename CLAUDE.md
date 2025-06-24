@@ -40,3 +40,12 @@ poetry run python reolink_firmware_check.py --manual
 - Unit tests for version comparison logic (prevents regression of build number bug)
 - Mock tests for API response parsing
 - Run with: `poetry run pytest` or `poetry run pytest -m "not integration"` to skip API calls
+
+## Session Tracking
+**IMPORTANT**: At the end of each coding session, update the cost tracking table in README.md with:
+- Date of session
+- Approximate duration  
+- Claude Code API costs (get from user)
+- Brief notes about what was accomplished
+
+This helps track the true cost of AI-assisted development for this project.

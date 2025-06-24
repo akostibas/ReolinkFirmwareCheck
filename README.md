@@ -21,7 +21,7 @@ poetry run python reolink_firmware_check.py --manual
 
 The first time you run the script, it will prompt you to enter your device information:
 - Device model (e.g., RLN8-410)
-- Hardware version (e.g., N2MB02)  
+- Hardware version (e.g., N2MB02)
 - Current firmware version (e.g., v3.5.1.368_25010326)
 
 This information is saved to a local `config` file. You can:
@@ -58,7 +58,7 @@ poetry run pytest test_reolink_firmware_check.py::TestAPIEndpoint -v        # Ju
 
 ### Test Coverage
 - **Version comparison logic** - Ensures build numbers are properly compared (prevents regression of the `_25010324` vs `_25010326` bug)
-- **API endpoint validation** - Verifies the Reolink API is still working 
+- **API endpoint validation** - Verifies the Reolink API is still working
 - **Response parsing** - Tests handling of API responses and edge cases
 - **Model mappings** - Validates device model to API ID mappings
 
@@ -76,6 +76,6 @@ This project was developed entirely by Claude (Anthropic's AI). Here's the API u
 
 *Total project cost: $2.62*
 
-**Session Details:**
+**2025-01-24 Session Details:**
 - Code changes: 1,143 lines added, 198 lines removed
 - Models used: Claude-3.5-Haiku (272k input, 8.3k output) + Claude-Sonnet (392 input, 32.3k output)

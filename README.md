@@ -73,9 +73,15 @@ This project was developed entirely by Claude (Anthropic's AI). Here's the API u
 | Date | Session Duration | Claude Code API Cost | Notes |
 |------|------------------|---------------------|-------|
 | 2025-01-24 | 38m API / 32m wall | $2.62 | Initial development, API integration, testing, config system, GitHub setup |
+| 2025-06-24 | 16m API / 20m wall | $0.94 | Raspberry Pi compatibility fixes, Poetry keyring workaround, clean entry point |
 
-*Total project cost: $2.62*
+*Total project cost: $3.56*
 
 **2025-01-24 Session Details:**
 - Code changes: 1,143 lines added, 198 lines removed
 - Models used: Claude-3.5-Haiku (272k input, 8.3k output) + Claude-Sonnet (392 input, 32.3k output)
+
+**2025-06-24 Session Details:**
+- Code changes: 96 lines added, 20 lines removed
+- Models used: Claude-3.5-Haiku (101.7k input, 3.9k output) + Claude-Sonnet (241 input, 11.9k output)
+- Key fixes: Raspberry Pi keyring authentication, clean entry point, updated documentation

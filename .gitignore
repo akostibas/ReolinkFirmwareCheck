@@ -37,6 +37,9 @@ ENV/
 .coverage
 htmlcov/
 
+# Configuration (user-specific)
+config
+
 # OS
 .DS_Store
 Thumbs.db

@@ -17,10 +17,15 @@ poetry run python reolink_firmware_check.py --manual
 
 ## Configuration
 
-Edit the script to update your device details:
-- `MODEL = "RLN8-410"`
-- `HARDWARE_VERSION = "N2MB02"`  
-- `CURRENT_VERSION = "v3.5.1.368_25010326"`
+The first time you run the script, it will prompt you to enter your device information:
+- Device model (e.g., RLN8-410)
+- Hardware version (e.g., N2MB02)  
+- Current firmware version (e.g., v3.5.1.368_25010326)
+
+This information is saved to a local `config` file. You can:
+- View current config: `poetry run python reolink_firmware_check.py --config`
+- Update version: `poetry run python reolink_firmware_check.py --update-version v3.5.1.368_25010326`
+- Edit the `config` file directly
 
 ## Exit Codes
 

@@ -6,7 +6,8 @@ Tests for Reolink Firmware Checker
 import pytest
 import requests_mock
 from packaging import version
-from reolink_firmware_check import ReolinkFirmwareChecker, MODEL, HARDWARE_VERSION
+from reolink_firmware_check import ReolinkFirmwareChecker
+from config import ReolinkConfig
 
 
 class TestVersionComparison:
@@ -82,7 +83,11 @@ class TestAPIEndpoint:
     @pytest.mark.integration  # Mark as integration test
     def test_api_endpoint_validity(self):
         """Test that the API endpoint is still valid and returns expected data"""
-        product_id, hardware_id = self.checker.get_product_and_hardware_ids(MODEL, HARDWARE_VERSION)
+        # Use default config values for testing
+        model = "RLN8-410"
+        hardware_version = "N2MB02"
+        
+        product_id, hardware_id = self.checker.get_product_and_hardware_ids(model, hardware_version)
         
         # Should find mapping for our known model
         assert product_id == 33
@@ -157,17 +162,20 @@ class TestEndToEnd:
             )
             
             # Test with older version - should detect update
+            model = "RLN8-410"
+            hardware_version = "N2MB02"
+            
             has_update = self.checker.check_for_updates(
-                MODEL, 
-                HARDWARE_VERSION, 
+                model, 
+                hardware_version, 
                 "v3.5.1.368_25010324"  # Older build
             )
             assert has_update == True
             
             # Test with same version - should not detect update  
             has_update = self.checker.check_for_updates(
-                MODEL,
-                HARDWARE_VERSION, 
+                model,
+                hardware_version, 
                 "v3.5.1.368_25010326"  # Same version
             )
             assert has_update == False

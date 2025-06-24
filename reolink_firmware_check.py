@@ -9,11 +9,7 @@ import json
 import re
 from packaging import version
 import sys
-
-# Configuration
-MODEL = "RLN8-410"
-HARDWARE_VERSION = "N2MB02"
-CURRENT_VERSION = "v3.5.1.368_25010324"
+from config import ReolinkConfig
 
 class ReolinkFirmwareChecker:
     def __init__(self):
@@ -324,18 +320,20 @@ class ReolinkFirmwareChecker:
             print(f"   Hardware version: {hardware_version}")
             return False
 
-def manual_check():
+def manual_check(config):
     """Open the download center in browser for manual checking"""
     import webbrowser
 
-    MODEL = "RLN8-410"
-    HARDWARE_VERSION = "N2MB02"
+    device_config = config.get_device_config()
+    model = device_config.get('model', 'UNKNOWN')
+    hardware_version = device_config.get('hardware_version', 'UNKNOWN')
 
     print(f"Opening download center for manual check...")
-    print(f"Look for model: {MODEL}")
-    print(f"Hardware version: {HARDWARE_VERSION}")
+    print(f"Look for model: {model}")
+    print(f"Hardware version: {hardware_version}")
 
-    webbrowser.open("https://reolink.com/download-center/")
+    if config.get_setting('auto_open_browser_on_manual', True):
+        webbrowser.open("https://reolink.com/download-center/")
 
     while True:
         response = input("\nDid you find a newer version? (y/n/version): ").strip().lower()
@@ -352,35 +350,68 @@ def manual_check():
 
 def main():
     import sys
+    
+    # Load configuration
+    config = ReolinkConfig()
+    device_config = config.get_device_config()
+    
+    model = device_config.get('model')
+    hardware_version = device_config.get('hardware_version')
+    current_version = device_config.get('current_firmware_version')
+    
+    if not all([model, hardware_version, current_version]):
+        print("❌ Configuration incomplete!")
+        print(f"Config file: {config.get_config_file_path()}")
+        print("Please ensure model, hardware_version, and current_firmware_version are set.")
+        sys.exit(1)
 
-
-    # Check for manual mode
-    if len(sys.argv) > 1 and sys.argv[1] == '--manual':
-        latest_version = manual_check()
-        if latest_version:
-            checker = ReolinkFirmwareChecker()
-            has_update, message = checker.compare_versions(CURRENT_VERSION, latest_version)
-            print(f"\n{message}")
-            if has_update:
-                print("\n🔔 Update available!")
-                sys.exit(1)
+    # Handle command line arguments
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '--manual':
+            latest_version = manual_check(config)
+            if latest_version:
+                checker = ReolinkFirmwareChecker()
+                has_update, message = checker.compare_versions(current_version, latest_version)
+                print(f"\n{message}")
+                if has_update:
+                    # Ask if user wants to update config
+                    update_config = input("\nUpdate config with this version? (y/n): ").strip().lower()
+                    if update_config == 'y':
+                        config.update_firmware_version(latest_version)
+                    print("\n🔔 Update available!")
+                    sys.exit(1)
+                else:
+                    print("\n✅ No updates needed")
+                    sys.exit(0)
             else:
-                print("\n✅ No updates needed")
+                print("\n✅ No updates found")
                 sys.exit(0)
-        else:
-            print("\n✅ No updates found")
+        elif sys.argv[1] == '--config':
+            config.show_config()
             sys.exit(0)
+        elif sys.argv[1] == '--update-version':
+            if len(sys.argv) > 2:
+                new_version = sys.argv[2]
+                config.update_firmware_version(new_version)
+                sys.exit(0)
+            else:
+                print("Usage: --update-version <version>")
+                sys.exit(1)
+        else:
+            print("Usage: reolink_firmware_check.py [--manual|--config|--update-version <version>]")
+            sys.exit(1)
 
     # Automatic check
     checker = ReolinkFirmwareChecker()
-    has_update = checker.check_for_updates(MODEL, HARDWARE_VERSION, CURRENT_VERSION)
+    has_update = checker.check_for_updates(model, hardware_version, current_version)
 
     if has_update:
         print("\n🔔 Update available!")
         sys.exit(1)
     else:
         print("\n✅ No updates needed")
-        print("\n💡 Try: python reolink_firmware_check.py --manual")
+        print(f"\n💡 Try: poetry run python reolink_firmware_check.py --manual")
+        print(f"💡 Config: poetry run python reolink_firmware_check.py --config")
         sys.exit(0)
 
 if __name__ == "__main__":

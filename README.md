@@ -2,6 +2,8 @@
 
 A Python script to check for new firmware versions for your Reolink NVR.
 
+**Note: This project was written 100% by Claude (Anthropic's AI assistant) with human guidance.**
+
 ## Usage
 
 ```bash
@@ -63,3 +65,17 @@ poetry run pytest test_reolink_firmware_check.py::TestAPIEndpoint -v        # Ju
 ## Notes
 
 Since Reolink's download center uses dynamic JavaScript content, the automatic scraping may not always work. Use `--manual` mode to open the download center in your browser and manually enter the latest version for comparison.
+
+## Development Cost Tracking
+
+This project was developed entirely by Claude (Anthropic's AI). Here's the API usage cost breakdown:
+
+| Date | Session Duration | Claude Code API Cost | Notes |
+|------|------------------|---------------------|-------|
+| 2025-01-24 | 38m API / 32m wall | $2.62 | Initial development, API integration, testing, config system, GitHub setup |
+
+*Total project cost: $2.62*
+
+**Session Details:**
+- Code changes: 1,143 lines added, 198 lines removed
+- Models used: Claude-3.5-Haiku (272k input, 8.3k output) + Claude-Sonnet (392 input, 32.3k output)
